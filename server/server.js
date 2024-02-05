@@ -167,7 +167,8 @@ async function table_fields_stream(prompt, responseStream) {
 
     stream.on("end", () => {
         console.log("=> Stream end");
-        // responseStream.write("\n");
-        // responseStream.end();
+
+        responseStream.write("event: table_fields\n");
+        responseStream.write("data: ^|NL|^\n\n");
     });
 }

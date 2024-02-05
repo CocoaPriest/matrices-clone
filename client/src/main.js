@@ -1,4 +1,8 @@
 import { SSE } from "sse.js";
+import { createGrid } from "ag-grid-community";
+import "ag-grid-enterprise";
+import "ag-grid-community/styles/ag-grid.css";
+import "ag-grid-community/styles/ag-theme-quartz.css";
 
 let api;
 const button_process = document.getElementById("button_process");
@@ -13,7 +17,7 @@ document.addEventListener("DOMContentLoaded", () => {
     };
 
     const gridDiv = document.querySelector("#myGrid");
-    api = agGrid.createGrid(gridDiv, gridOptions);
+    api = createGrid(gridDiv, gridOptions);
 });
 
 function process() {
@@ -51,9 +55,11 @@ function process() {
             const columnDefs = table_fields_chunks.map((val) => ({
                 field: val,
                 headerName: val,
+                editable: true,
             }));
-            // console.log(columnDefs);
+            console.log(columnDefs);
             api.setGridOption("columnDefs", columnDefs);
+            api.setGridOption("rowData", [{ name: "" }, { name: "" }, { name: "" }]);
         } else {
             last_chunk += event.data;
         }

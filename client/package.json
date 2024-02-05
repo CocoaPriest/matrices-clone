@@ -12,6 +12,8 @@
         "vite": "^5.0.8"
     },
     "dependencies": {
+        "ag-grid-community": "^31.0.3",
+        "ag-grid-enterprise": "^31.0.3",
         "sse.js": "^2.2.0"
     }
 }
