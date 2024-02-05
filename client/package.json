@@ -1,0 +1,17 @@
+{
+    "name": "vite-project",
+    "private": true,
+    "version": "0.0.0",
+    "type": "module",
+    "scripts": {
+        "dev": "npx vite",
+        "build": "npx vite build",
+        "preview": "npx vite preview"
+    },
+    "devDependencies": {
+        "vite": "^5.0.8"
+    },
+    "dependencies": {
+        "sse.js": "^2.2.0"
+    }
+}

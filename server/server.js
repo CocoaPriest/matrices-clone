@@ -1,4 +1,5 @@
 import express from "express";
+import cors from "cors";
 import fs from "fs/promises";
 import OpenAI from "openai";
 import dotenv from "dotenv";
@@ -11,10 +12,12 @@ const PORT = process.env.PORT || 3002;
 const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
 
 // Serve HTML files from a specified directory (e.g., 'public')
+app.use(cors());
+app.use(express.json());
 app.use(express.static("public"));
 
 // Example API endpoint
-app.get("/api/process", async (req, res) => {
+app.post("/api/process", async (req, res) => {
     res.writeHead(200, {
         "Content-Type": "text/event-stream",
         Connection: "keep-alive",
@@ -22,9 +25,11 @@ app.get("/api/process", async (req, res) => {
     });
 
     // Close the connection when the client disconnects
-    req.on("close", () => res.end());
+    // req.on("close", () => res.end());
 
-    // TODO: `prompt`
+    console.log(req.body.prompt);
+    const prompt = req.body.prompt;
+
     await completion_stream(prompt, res);
 
     // const stream = await completion_stream(q);

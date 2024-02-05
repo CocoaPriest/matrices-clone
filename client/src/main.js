@@ -1,7 +1,9 @@
-document.addEventListener("DOMContentLoaded", () => {
-    const button_process = document.getElementById("button_process");
-    button_process.addEventListener("click", process);
+import { SSE } from "sse.js";
 
+const button_process = document.getElementById("button_process");
+button_process.addEventListener("click", process);
+
+document.addEventListener("DOMContentLoaded", () => {
     const gridOptions = {
         // Row Data: The data to be displayed.
         rowData: [],
@@ -27,13 +29,18 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 function process() {
-    const prompt = document.getElementById("ta_prompt").innerHTML;
-    // TODO: use prompt
-
     const table_header = document.getElementById("table_name");
     table_header.innerHTML = "Thinking...";
 
-    const subscription = new EventSource("/api/process");
+    const prompt = document.getElementById("ta_prompt").value;
+    const payload = JSON.stringify({ prompt: prompt });
+    console.log(payload);
+    // debugger;
+
+    var subscription = new SSE("http://localhost:3002/api/process", {
+        headers: { "Content-Type": "application/json" },
+        payload: payload,
+    });
 
     const table_name_chunks = [];
     subscription.addEventListener("table_name", (event) => {
