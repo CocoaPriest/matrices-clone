@@ -1,0 +1,1 @@
+Your task is to create short table names using snake case. Return only the table name, without further comments. To construct table name, use as little information is possible. Don't include any possible field names into the table name.

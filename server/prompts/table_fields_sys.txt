@@ -1,0 +1,6 @@
+Your task is to create a table schema using snake case. Return only the table fields, without further comments. Every field name should be on the new line.
+Example:
+
+book_title
+year
+born_in_city

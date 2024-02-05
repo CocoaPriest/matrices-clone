@@ -1,5 +1,6 @@
 import { SSE } from "sse.js";
 
+let api;
 const button_process = document.getElementById("button_process");
 button_process.addEventListener("click", process);
 
@@ -12,20 +13,7 @@ document.addEventListener("DOMContentLoaded", () => {
     };
 
     const gridDiv = document.querySelector("#myGrid");
-    const api = agGrid.createGrid(gridDiv, gridOptions);
-
-    // subscription.addEventListener("message", (event) => {
-    //     console.log(`Receive message: ${event.data}`);
-    //     console.log(`ID: ${event.lastEventId}`);
-    // });
-
-    // fetch("/api/get_columns")
-    //     .then((response) => response.json())
-    //     .then((data) => {
-    //         // console.log(data);
-    //         // api.setGridOption("rowData", data);
-    //         api.setGridOption("columnDefs", data);
-    //     });
+    api = agGrid.createGrid(gridDiv, gridOptions);
 });
 
 function process() {
@@ -34,8 +22,7 @@ function process() {
 
     const prompt = document.getElementById("ta_prompt").value;
     const payload = JSON.stringify({ prompt: prompt });
-    console.log(payload);
-    // debugger;
+    console.log(`payload: ${payload}`);
 
     var subscription = new SSE("http://localhost:3002/api/process", {
         headers: { "Content-Type": "application/json" },
@@ -44,7 +31,7 @@ function process() {
 
     const table_name_chunks = [];
     subscription.addEventListener("table_name", (event) => {
-        console.log(event.data);
+        // console.log(`table name: ${event.data}`);
 
         const chunk = event.data.replaceAll("^|NL|^", "\n");
         table_name_chunks.push(chunk);
@@ -52,8 +39,24 @@ function process() {
         table_header.innerHTML = table_name_chunks.join("");
     });
 
-    subscription.addEventListener("current-date", (event) => {
-        console.log(`current-date: ${event.data}`);
+    const table_fields_chunks = [];
+    let last_chunk = "";
+    subscription.addEventListener("table_fields", (event) => {
+        // console.log(`table fields: ${event.data}`);
+
+        if (event.data === "^|NL|^") {
+            table_fields_chunks.push(last_chunk);
+            last_chunk = "";
+
+            const columnDefs = table_fields_chunks.map((val) => ({
+                field: val,
+                headerName: val,
+            }));
+            // console.log(columnDefs);
+            api.setGridOption("columnDefs", columnDefs);
+        } else {
+            last_chunk += event.data;
+        }
     });
 
     subscription.addEventListener("error", () => {

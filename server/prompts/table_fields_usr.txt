@@ -1,0 +1,2 @@
+Create a table schema based on this prompt:
+===
