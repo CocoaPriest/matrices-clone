@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <script src="https://cdn.jsdelivr.net/npm/ag-grid-community/dist/ag-grid-community.min.js"></script>
+        <script type="module" src="javascripts/main.js"></script>
+        <title>Document</title>
+    </head>
+    <body>
+        <label for="w3review">Prompt:</label><br />
+        <textarea id="ta_prompt" name="w3review" rows="4" cols="50">
+I want to recruit IMO medalists from 2013-2017 and list their name, best medal, years awarded, linkedin URL, country and current job.</textarea
+        >
+        <br />
+        <button id="button_process">Process</button>
+        <br />
+        <h2 id="table_name">Empty table</h2>
+        <div id="myGrid" class="ag-theme-quartz" style="height: 440px"></div>
+    </body>
+</html>
